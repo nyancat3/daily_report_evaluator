@@ -69,7 +69,7 @@ data "archive_file" "lambda_zip" {
 resource "aws_lambda_function" "lambda_function" {
   function_name    = "daily-report-evaluator"
   role             = aws_iam_role.lambda_role.arn
-  handler          = "daily-report-evaluator.lambda_handler"
+  handler          = "lambda_function.lambda_handler"
   runtime          = "python3.12"
   architectures    = ["arm64"]
   filename         = data.archive_file.lambda_zip.output_path
