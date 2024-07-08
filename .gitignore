@@ -203,3 +203,4 @@ terraform.rc
 
 # [Others]
 lambda.zip
+lambda_layer_slack_bolt.zip

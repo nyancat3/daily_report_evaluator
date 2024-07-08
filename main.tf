@@ -17,6 +17,14 @@ variable "aws_account_id" {
   type = string
 }
 
+variable "slack_bot_token" {
+  type = string
+}
+
+variable "slack_signing_secret" {
+  type = string
+}
+
 provider "aws" {
   region = var.aws_region
 }
@@ -66,6 +74,12 @@ data "archive_file" "lambda_zip" {
   output_path = "${path.module}/lambda.zip"
 }
 
+data "archive_file" "lambda_layer_zip" {
+  type        = "zip"
+  source_dir  = "${path.module}/build"
+  output_path = "${path.module}/lambda_layer_slack_bolt.zip"
+}
+
 resource "aws_lambda_function" "lambda_function" {
   function_name    = "daily-report-evaluator"
   role             = aws_iam_role.lambda_role.arn
@@ -75,4 +89,18 @@ resource "aws_lambda_function" "lambda_function" {
   filename         = data.archive_file.lambda_zip.output_path
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   depends_on       = [aws_iam_role_policy_attachment.lambda_policy_attachment]
+  layers           = [aws_lambda_layer_version.lambda_layer.arn]
+  environment {
+    variables = {
+      SLACK_BOT_TOKEN      = var.slack_bot_token,
+      SLACK_SIGNING_SECRET = var.slack_signing_secret
+    }
+  }
+}
+
+resource "aws_lambda_layer_version" "lambda_layer" {
+  layer_name          = "lambda_layer_slack_bolt"
+  filename            = data.archive_file.lambda_layer_zip.output_path
+  source_code_hash    = data.archive_file.lambda_layer_zip.output_base64sha256
+  compatible_runtimes = ["python3.12"]
 }

@@ -76,5 +76,15 @@ export SLACK_BOT_TOKEN=xoxb-<your-bot-token>
 ```
 
 ```bash
-pip install slack_bolt
+pip install -r requirements.txt
+```
+
+```bash
+python3 lambda/lambda_function.py
+```
+
+## Lambda Layer
+
+```bash
+pip install -r requirements.txt -t ./build/python/
 ```
