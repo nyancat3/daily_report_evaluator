@@ -85,6 +85,9 @@ python3 lambda/lambda_function.py
 
 ## Lambda Layer
 
+The layer path should be `python`
+https://docs.aws.amazon.com/lambda/latest/dg/packaging-layers.html
+
 ```bash
 pip install -r requirements.txt -t ./build/python/
 ```

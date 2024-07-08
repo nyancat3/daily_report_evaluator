@@ -104,3 +104,36 @@ resource "aws_lambda_layer_version" "lambda_layer" {
   source_code_hash    = data.archive_file.lambda_layer_zip.output_base64sha256
   compatible_runtimes = ["python3.12"]
 }
+
+resource "aws_apigatewayv2_api" "api" {
+  name          = "daily-report-evaluator-api"
+  protocol_type = "HTTP"
+}
+resource "aws_apigatewayv2_integration" "integration" {
+  api_id           = aws_apigatewayv2_api.api.id
+  integration_type = "AWS_PROXY"
+
+  integration_method = "POST"
+  integration_uri    = aws_lambda_function.lambda_function.invoke_arn
+}
+
+resource "aws_apigatewayv2_route" "route" {
+  api_id    = aws_apigatewayv2_api.api.id
+  route_key = "ANY /${aws_lambda_function.lambda_function.function_name}"
+
+  target = "integrations/${aws_apigatewayv2_integration.integration.id}"
+}
+
+resource "aws_apigatewayv2_stage" "stage" {
+  api_id      = aws_apigatewayv2_api.api.id
+  auto_deploy = true
+  name        = "dev"
+}
+
+resource "aws_lambda_permission" "apigw_lambda" {
+  statement_id  = "AllowAPIGatewayInvoke"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.lambda_function.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.api.execution_arn}/*/*/daily-report-evaluator"
+}
