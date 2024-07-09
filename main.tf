@@ -17,6 +17,10 @@ variable "aws_account_id" {
   type = string
 }
 
+variable "open_ai_api_key" {
+  type = string
+}
+
 variable "slack_bot_token" {
   type = string
 }
@@ -92,6 +96,7 @@ resource "aws_lambda_function" "lambda_function" {
   layers           = [aws_lambda_layer_version.lambda_layer.arn]
   environment {
     variables = {
+      OPEN_AI_API_KEY      = var.open_ai_api_key,
       SLACK_BOT_TOKEN      = var.slack_bot_token,
       SLACK_SIGNING_SECRET = var.slack_signing_secret
     }

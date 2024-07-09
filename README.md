@@ -13,6 +13,9 @@ Subscribe to Bot Events
 - `message.channels` listens for messages in public channels that your app is added to
 - `message.groups` listens for messages in 🔒 private channels that your app is added to
 
+Event Subscriptions > Enable Events > Request URL
+API Gateway HTTP URL
+
 ## Library
 
 https://github.com/SlackAPI/bolt-python
@@ -47,6 +50,9 @@ terraform.tfvars
 ```hcl
 aws_region     =
 aws_account_id =
+open_ai_api_key =
+slack_bot_token =
+slack_signing_secret =
 ```
 
 To make access keys more secure;
@@ -71,13 +77,10 @@ source deactivate
 ```
 
 ```bash
-export SLACK_SIGNING_SECRET=<your-signing-secret>
-export SLACK_BOT_TOKEN=xoxb-<your-bot-token>
-```
-
-```bash
 pip install -r requirements.txt
 ```
+
+Run locally
 
 ```bash
 python3 lambda/lambda_function.py
