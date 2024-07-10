@@ -22,8 +22,7 @@ class OpenAi:
                     "content": (
                         f"""
                         Please evaluate a given daily report of the employee.
-                        You have to rate the daily report on a scale of 0 to 100.
-                        Please rate the daily report on the following points.
+                        You must rate the daily report on the following points.
 
                         - It's clear enough to understand what the employee did that day.
                         - It doesn't miss any tasks that need to be written.
@@ -32,14 +31,19 @@ class OpenAi:
                         ## Output format
                         The output consists of a score and possible improvements in bullet points and must be in less than ten lines.
                         Minimize redundancy in your output as much as possible. Use a gentle tone ending with です/ます. Avoid a repetition. Do not include the question in the output.
-                        First, give a score on a scale of 0 to 100 for the given daily report.
-                        Then give possible improvements, each in less than 200 tokens.
+                        First, if the daily report is not good enough, give instructions for rewriting it, each in less than 200 tokens. If the daily report is good enough, give no instructions.
                         Below is an example of the output style you must strictly follow.
 
-                        {{score}}点です。
-                        - {{possible improvement 1}}
-                        - {{possible improvement 2}}
-                        - {{possible improvement 3}}
+                        ### If the daily report is not good enough and needs to be rewritten
+
+                        以下の指示に従って、日報を書き直してみてください。
+                        - {{instruction 1}}
+                        - {{instruction 2}}
+                        - {{instruction 3}}
+
+                        ### If the daily report is good enough and does not need rewriting
+
+                        良い日報ですね！お疲れさまでした 🍵
 
                         ## Output (Output must be in Japanese)
                         """

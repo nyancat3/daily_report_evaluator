@@ -27,7 +27,7 @@ def message_evaluation(message, say, ack):
     print(f"text: {text}")
     evaluation = OpenAi().create_evaluation(text)
     print(f"evaluation: {evaluation}")
-    say(f"<@{user}> お疲れさまでした 🍵 {evaluation}")
+    say(f"<@{user}> {evaluation}")
 
 @app.event("message")
 def handle_message_events(body, logger):
