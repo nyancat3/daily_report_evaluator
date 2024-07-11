@@ -14,7 +14,7 @@ app = App(
 
 cached_timestamp = None
 
-@app.message("日報")
+@app.message("\[日報\]")
 def message_evaluation(message, say, ack):
     ack()
     global cached_timestamp
@@ -27,7 +27,7 @@ def message_evaluation(message, say, ack):
     print(f"text: {text}")
     evaluation = OpenAi().create_evaluation(text)
     print(f"evaluation: {evaluation}")
-    say(f"<@{user}> {evaluation}")
+    say(f"{evaluation}")
 
 @app.event("message")
 def handle_message_events(body, logger):
