@@ -31,7 +31,7 @@ class OpenAi:
                         ## Output format
                         The output consists of a score and possible improvements in bullet points and must be in less than ten lines.
                         Minimize redundancy in your output as much as possible. Use a gentle tone ending with です/ます. Avoid a repetition. Do not include the question in the output.
-                        First, if the daily report is not good enough, give instructions for rewriting it, each in less than 200 tokens. If the daily report is good enough, give no instructions.
+                        If the daily report is not good enough, give instructions for rewriting it, each in less than 200 tokens. If the daily report is good enough, just give a compliment on what is good about the daily report in less than 200 tokens.
                         Below is an example of the output style you must strictly follow.
 
                         ### If the daily report is not good enough and needs to be rewritten
@@ -43,7 +43,7 @@ class OpenAi:
 
                         ### If the daily report is good enough and does not need rewriting
 
-                        良い日報ですね！お疲れさまでした 🍵
+                        良い日報ですね！{{compliment}} お疲れさまでした 🍵
 
                         ## Output (Output must be in Japanese)
                         """
