@@ -19,7 +19,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: 'pip' # caching pip dependencies
-      - run: pip install -r requirements.txt -t ./build/python/
+      - run: mkdir -p ./build/python && pip install -r requirements.txt -t ./build/python/
 
   test:
     runs-on: ubuntu-latest
