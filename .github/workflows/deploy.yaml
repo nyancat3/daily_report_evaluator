@@ -10,30 +10,18 @@ on:
     #   - 'main.tf'
 
 jobs:
-  lambda_layer_pip_install:
+  terraform_apply:
     runs-on: ubuntu-latest
-    name: Install Python Dependencies for Lambda Layer
+    name: Install Dependencies and Apply Terraform
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
           cache: 'pip' # caching pip dependencies
-      - run: mkdir -p ./build/python && pip install -r requirements.txt -t ./build/python/
-
-  test:
-    runs-on: ubuntu-latest
-    name: Test
-    steps:
+      - run: pip install -r requirements.txt -t ./build/python/
       - name: List contents of the build directory
         run: ls -R ./build
-
-  terraform_apply:
-    runs-on: ubuntu-latest
-    needs: lambda_layer_pip_install
-    name: Terraform Apply
-    steps:
-      - uses: actions/checkout@v4
       - name: terraform apply
         uses: dflook/terraform-apply@v1
         env:
