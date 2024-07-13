@@ -2,6 +2,7 @@ name: Terraform Apply
 
 on:
   push:
+    # TODO: Uncomment
     # branches:
     #   - main
     # paths:
@@ -35,4 +36,4 @@ jobs:
             open_ai_api_key = "${{ secrets.open_ai_api_key }}"
             slack_bot_token = "${{ secrets.slack_bot_token }}"
             slack_signing_secret = "${{ secrets.slack_signing_secret }}"
-          auto_approve: false
+          auto_approve: false # TODO: Set to true
