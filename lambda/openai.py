@@ -43,7 +43,7 @@ class OpenAi:
 
                         ### If the daily report is good enough and does not need rewriting
 
-                        良い日報ですね！{{compliment}} お疲れさまでした 🍵
+                        良い日報ですね！{{compliment}}
 
                         ## Output (Output must be in Japanese)
                         """

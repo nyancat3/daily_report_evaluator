@@ -27,7 +27,10 @@ def message_evaluation(message, say, ack):
     print(f"text: {text}")
     evaluation = OpenAi().create_evaluation(text)
     print(f"evaluation: {evaluation}")
-    say(f"{evaluation}")
+    if "以下の指示に従って" in evaluation:
+        say(f"{evaluation}")
+    else:
+        say(f"{evaluation}お疲れさまでした 🍵")
 
 @app.event("message")
 def handle_message_events(body, logger):
