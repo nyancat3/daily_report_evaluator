@@ -94,6 +94,7 @@ resource "aws_lambda_function" "lambda_function" {
   source_code_hash = data.archive_file.lambda_zip.output_base64sha256
   depends_on       = [aws_iam_role_policy_attachment.lambda_policy_attachment]
   layers           = [aws_lambda_layer_version.lambda_layer.arn]
+  timeout          = 10
   environment {
     variables = {
       OPEN_AI_API_KEY      = var.open_ai_api_key,
@@ -101,6 +102,12 @@ resource "aws_lambda_function" "lambda_function" {
       SLACK_SIGNING_SECRET = var.slack_signing_secret
     }
   }
+}
+
+resource "aws_lambda_function_event_invoke_config" "lambda_function_event_invoke_config" {
+  function_name                = aws_lambda_function.lambda_function.function_name
+  maximum_event_age_in_seconds = 120
+  maximum_retry_attempts       = 0
 }
 
 resource "aws_lambda_layer_version" "lambda_layer" {

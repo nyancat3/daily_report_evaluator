@@ -1,6 +1,10 @@
 import requests
+import logging
 from dotenv import load_dotenv
 import os
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
 
 class OpenAi:
     def create_evaluation(self, daily_report_text):
@@ -58,8 +62,8 @@ class OpenAi:
         response = requests.post(url, headers=headers, json=data)
 
         if response.status_code == 200:
-            print("Response from OpenAI:", response.json())
+            logger.info("Response from OpenAI:", response.json())
             content = response.json()['choices'][0]['message']['content']
             return content
         else:
-            print("Error:", response.status_code, response.text)
+            logger.error("Error:", response.status_code, response.text)
