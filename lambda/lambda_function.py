@@ -1,4 +1,5 @@
 import os
+import re
 import logging
 from slack_bolt import App
 from slack_bolt.adapter.aws_lambda import SlackRequestHandler
@@ -30,11 +31,10 @@ def message_evaluation(message, say, ack):
     user, text = message["user"], message["text"].replace("`", "")
     logger.info(f"text: {text}")
     evaluation = OpenAi().create_evaluation(text)
-    logger.info(f"evaluation: {evaluation}")
-    if "以下の指示に従って" in evaluation:
-        say(f"{evaluation}")
-    else:
-        say(f"{evaluation}お疲れさまでした 🍵")
+    logger.info(f"raw evaluation: {evaluation}")
+    evaluation = re.sub(r'#### If the daily report is.*', '', evaluation).strip()
+    logger.info(f"cleaned evaluation: {evaluation}")
+    say(f"{evaluation}お疲れさまでした 🍵" if "以下の指示に従って" not in evaluation else evaluation)
 
 @app.event("message")
 def handle_message_events(body):
