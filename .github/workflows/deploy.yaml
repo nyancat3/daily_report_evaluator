@@ -1,0 +1,39 @@
+name: Terraform Apply
+
+on:
+  push:
+    # TODO: Uncomment
+    # branches:
+    #   - main
+    # paths:
+    #   - 'lambda/**.py'
+    #   - 'requirements.txt'
+    #   - 'main.tf'
+
+jobs:
+  terraform_apply:
+    runs-on: ubuntu-latest
+    name: Install Dependencies and Apply Terraform
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip' # caching pip dependencies
+      - run: pip install -r requirements.txt -t ./build/python/
+      - name: List contents of the build directory
+        run: ls -R ./build
+      - name: terraform apply
+        uses: dflook/terraform-apply@v1
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.aws_access_key_id }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.aws_secret_access_key }}
+        with:
+          path: .
+          variables: |
+            aws_region = "${{ secrets.aws_region }}"
+            aws_account_id = "${{ secrets.aws_account_id }}"
+            open_ai_api_key = "${{ secrets.open_ai_api_key }}"
+            slack_bot_token = "${{ secrets.slack_bot_token }}"
+            slack_signing_secret = "${{ secrets.slack_signing_secret }}"
+          auto_approve: false # TODO: Set to true
