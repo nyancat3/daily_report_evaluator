@@ -19,7 +19,7 @@ class OpenAi:
             "Authorization": f"Bearer {open_ai_api_key}"
         }
         data = {
-            "model": "gpt-4o",
+            "model": "gpt-4o-mini",
             "messages": [
                 {
                     "role": "system",
